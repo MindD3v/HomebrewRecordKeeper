@@ -1,6 +1,6 @@
 package com.homebrewrecordkeeper.service;
 
-import com.homebrewrecordkeeper.dao.HopRecordDao;
+import com.homebrewrecordkeeper.repository.HopRecordRepository;
 import com.homebrewrecordkeeper.entity.HopRecordEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,24 +10,24 @@ import java.util.List;
 @Service
 public class HopRecordServiceImpl implements HopRecordService {
     @Autowired
-    private HopRecordDao hopRecordDao;
+    private HopRecordRepository _hopRecordRepository;
     @Override
     public HopRecordEntity addHopRecord(HopRecordEntity hopRecordEntity) {
-        return hopRecordDao.addHopRecord(hopRecordEntity);
+        return _hopRecordRepository.addHopRecord(hopRecordEntity);
     }
 
     @Override
     public boolean deleteHopRecord(int id) {
-        HopRecordEntity hopRecordEntity = hopRecordDao.getHopRecordById(id);
+        HopRecordEntity hopRecordEntity = _hopRecordRepository.getHopRecordById(id);
         if(hopRecordEntity!=null)
-            return hopRecordDao.deleteHopRecord(hopRecordEntity);
+            return _hopRecordRepository.deleteHopRecord(hopRecordEntity);
         else
             return false;
     }
 
     @Override
     public HopRecordEntity updateHopRecord(HopRecordEntity hopRecordEntity, int id) {
-        HopRecordEntity hopRecordById = hopRecordDao.getHopRecordById(id);
+        HopRecordEntity hopRecordById = _hopRecordRepository.getHopRecordById(id);
         if(hopRecordById != null)
         {
             hopRecordById.setType(hopRecordEntity.getType());
@@ -36,28 +36,28 @@ public class HopRecordServiceImpl implements HopRecordService {
             hopRecordById.setAlphaAcid(hopRecordEntity.getAlphaAcid());
             hopRecordById.setTimeInMinutes(hopRecordEntity.getTimeInMinutes());
 
-            return hopRecordDao.updateHopRecord(hopRecordById);
+            return _hopRecordRepository.updateHopRecord(hopRecordById);
         }
         return null;
     }
 
     @Override
     public HopRecordEntity getHopRecordById(int id) {
-        return hopRecordDao.getHopRecordById(id);
+        return _hopRecordRepository.getHopRecordById(id);
     }
 
     @Override
     public List<HopRecordEntity> getAll() {
-        return hopRecordDao.getAll();
+        return _hopRecordRepository.getAll();
     }
 
     @Override
-    public void setHopRecordDao(HopRecordDao hrd) {
-        hopRecordDao = hrd;
+    public void setHopRecordRepository(HopRecordRepository hrd) {
+        _hopRecordRepository = hrd;
     }
 
     @Override
-    public HopRecordDao getHopRecordDao() {
-        return hopRecordDao;
+    public HopRecordRepository getHopRecordRepository() {
+        return _hopRecordRepository;
     }
 }

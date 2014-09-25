@@ -1,6 +1,6 @@
 package com.homebrewrecordkeeper.service.unit;
 
-import com.homebrewrecordkeeper.dao.HopRecordDao;
+import com.homebrewrecordkeeper.repository.HopRecordRepository;
 import com.homebrewrecordkeeper.entity.HopRecordEntity;
 import com.homebrewrecordkeeper.service.HopRecordService;
 import com.homebrewrecordkeeper.service.HopRecordServiceImpl;
@@ -24,13 +24,13 @@ public class HopRecordServiceTest {
         HopRecordEntity createdHopRecordEntity = new HopRecordEntity(2,"oz",60,"Cascade",5);
         createdHopRecordEntity.setId(1);
 
-        HopRecordDao hopRecordDao = createNiceMock(HopRecordDao.class);
-        expect(hopRecordDao.addHopRecord(hopRecordEntity)).andReturn(createdHopRecordEntity);
-        replay(hopRecordDao);
+        HopRecordRepository hopRecordRepository = createNiceMock(HopRecordRepository.class);
+        expect(hopRecordRepository.addHopRecord(hopRecordEntity)).andReturn(createdHopRecordEntity);
+        replay(hopRecordRepository);
 
 
         HopRecordService hopRecordService = new HopRecordServiceImpl();
-        hopRecordService.setHopRecordDao(hopRecordDao);
+        hopRecordService.setHopRecordRepository(hopRecordRepository);
         HopRecordEntity testedHopRecordEntity = hopRecordService.addHopRecord(hopRecordEntity);
 
         assertThat(testedHopRecordEntity.getId(),not(equalTo(0)));
@@ -45,13 +45,13 @@ public class HopRecordServiceTest {
         HopRecordEntity changedHopRecordEntity = new HopRecordEntity(5,"oz",60,"Perle",5);
         changedHopRecordEntity.setId(1);
 
-        HopRecordDao hopRecordDao = createNiceMock(HopRecordDao.class);
-        expect(hopRecordDao.getHopRecordById(hopRecordEntity.getId())).andReturn(hopRecordEntity);
-        expect(hopRecordDao.updateHopRecord(hopRecordEntity)).andReturn(changedHopRecordEntity);
-        replay(hopRecordDao);
+        HopRecordRepository hopRecordRepository = createNiceMock(HopRecordRepository.class);
+        expect(hopRecordRepository.getHopRecordById(hopRecordEntity.getId())).andReturn(hopRecordEntity);
+        expect(hopRecordRepository.updateHopRecord(hopRecordEntity)).andReturn(changedHopRecordEntity);
+        replay(hopRecordRepository);
 
         HopRecordService hopRecordService = new HopRecordServiceImpl();
-        hopRecordService.setHopRecordDao(hopRecordDao);
+        hopRecordService.setHopRecordRepository(hopRecordRepository);
         HopRecordEntity testedHopRecordEntity = hopRecordService.updateHopRecord(changedHopRecordEntity, hopRecordEntity.getId());
 
         assertThat(testedHopRecordEntity.getId(),not(equalTo(0)));
@@ -64,13 +64,13 @@ public class HopRecordServiceTest {
         HopRecordEntity hopRecordEntity = new HopRecordEntity(2,"oz",60,"Cascade",5);
         hopRecordEntity.setId(1);
 
-        HopRecordDao hopRecordDao = createNiceMock(HopRecordDao.class);
-        expect(hopRecordDao.getHopRecordById(hopRecordEntity.getId())).andReturn(hopRecordEntity);
-        expect(hopRecordDao.deleteHopRecord(hopRecordEntity)).andReturn(true);
-        replay(hopRecordDao);
+        HopRecordRepository hopRecordRepository = createNiceMock(HopRecordRepository.class);
+        expect(hopRecordRepository.getHopRecordById(hopRecordEntity.getId())).andReturn(hopRecordEntity);
+        expect(hopRecordRepository.deleteHopRecord(hopRecordEntity)).andReturn(true);
+        replay(hopRecordRepository);
 
         HopRecordService hopRecordService = new HopRecordServiceImpl();
-        hopRecordService.setHopRecordDao(hopRecordDao);
+        hopRecordService.setHopRecordRepository(hopRecordRepository);
         boolean result = hopRecordService.deleteHopRecord(hopRecordEntity.getId());
 
         assertThat(result,equalTo(true));
@@ -80,12 +80,12 @@ public class HopRecordServiceTest {
     {
         final HopRecordEntity test1 = new HopRecordEntity(2,"oz",60,"Cascade",5);
         final HopRecordEntity test2 = new HopRecordEntity(5,"oz",60,"Perle",5);
-        HopRecordDao hopRecordDao = createNiceMock(HopRecordDao.class);
-        expect(hopRecordDao.getAll()).andReturn(new ArrayList<>(Arrays.asList(test1, test2)));
-        replay(hopRecordDao);
+        HopRecordRepository hopRecordRepository = createNiceMock(HopRecordRepository.class);
+        expect(hopRecordRepository.getAll()).andReturn(new ArrayList<>(Arrays.asList(test1, test2)));
+        replay(hopRecordRepository);
 
         HopRecordService hopRecordService = new HopRecordServiceImpl();
-        hopRecordService.setHopRecordDao(hopRecordDao);
+        hopRecordService.setHopRecordRepository(hopRecordRepository);
         List<HopRecordEntity> hopRecordEntityList = hopRecordService.getAll();
 
         assertThat(hopRecordEntityList.get(0),equalTo(test1));
@@ -96,12 +96,12 @@ public class HopRecordServiceTest {
     {
         final HopRecordEntity test1 = new HopRecordEntity(2,"oz",60,"Cascade",5);
         test1.setId(1);
-        HopRecordDao hopRecordDao = createNiceMock(HopRecordDao.class);
-        expect(hopRecordDao.getHopRecordById(1)).andReturn(test1);
-        replay(hopRecordDao);
+        HopRecordRepository hopRecordRepository = createNiceMock(HopRecordRepository.class);
+        expect(hopRecordRepository.getHopRecordById(1)).andReturn(test1);
+        replay(hopRecordRepository);
 
         HopRecordService hopRecordService = new HopRecordServiceImpl();
-        hopRecordService.setHopRecordDao(hopRecordDao);
+        hopRecordService.setHopRecordRepository(hopRecordRepository);
         HopRecordEntity hopRecordEntity = hopRecordService.getHopRecordById(1);
 
         assertThat(hopRecordEntity.getId(),equalTo(1));
@@ -112,12 +112,12 @@ public class HopRecordServiceTest {
     @Test
     public void getNotExistingHopRecordByIdTest()
     {
-        HopRecordDao hopRecordDao = createNiceMock(HopRecordDao.class);
-        expect(hopRecordDao.getHopRecordById(1)).andReturn(null);
-        replay(hopRecordDao);
+        HopRecordRepository hopRecordRepository = createNiceMock(HopRecordRepository.class);
+        expect(hopRecordRepository.getHopRecordById(1)).andReturn(null);
+        replay(hopRecordRepository);
 
         HopRecordService hopRecordService = new HopRecordServiceImpl();
-        hopRecordService.setHopRecordDao(hopRecordDao);
+        hopRecordService.setHopRecordRepository(hopRecordRepository);
         HopRecordEntity hopRecordEntity = hopRecordService.getHopRecordById(1);
 
         assertThat(hopRecordEntity,equalTo(null));
@@ -128,13 +128,13 @@ public class HopRecordServiceTest {
         HopRecordEntity hopRecordEntity = new HopRecordEntity(2,"oz",60,"Cascade",5);
         hopRecordEntity.setId(1);
 
-        HopRecordDao hopRecordDao = createNiceMock(HopRecordDao.class);
-        expect(hopRecordDao.getHopRecordById(1)).andReturn(null);
-        expect(hopRecordDao.updateHopRecord(hopRecordEntity)).andReturn(hopRecordEntity);
-        replay(hopRecordDao);
+        HopRecordRepository hopRecordRepository = createNiceMock(HopRecordRepository.class);
+        expect(hopRecordRepository.getHopRecordById(1)).andReturn(null);
+        expect(hopRecordRepository.updateHopRecord(hopRecordEntity)).andReturn(hopRecordEntity);
+        replay(hopRecordRepository);
 
         HopRecordService hopRecordService = new HopRecordServiceImpl();
-        hopRecordService.setHopRecordDao(hopRecordDao);
+        hopRecordService.setHopRecordRepository(hopRecordRepository);
         HopRecordEntity testedHopRecordEntity = hopRecordService.updateHopRecord(hopRecordEntity, hopRecordEntity.getId());
 
         assertThat(testedHopRecordEntity,equalTo(null));
@@ -145,13 +145,13 @@ public class HopRecordServiceTest {
         HopRecordEntity hopRecordEntity = new HopRecordEntity(2,"oz",60,"Cascade",5);
         hopRecordEntity.setId(1);
 
-        HopRecordDao hopRecordDao = createNiceMock(HopRecordDao.class);
-        expect(hopRecordDao.getHopRecordById(hopRecordEntity.getId())).andReturn(null);
-        expect(hopRecordDao.deleteHopRecord(hopRecordEntity)).andReturn(false);
-        replay(hopRecordDao);
+        HopRecordRepository hopRecordRepository = createNiceMock(HopRecordRepository.class);
+        expect(hopRecordRepository.getHopRecordById(hopRecordEntity.getId())).andReturn(null);
+        expect(hopRecordRepository.deleteHopRecord(hopRecordEntity)).andReturn(false);
+        replay(hopRecordRepository);
 
         HopRecordService hopRecordService = new HopRecordServiceImpl();
-        hopRecordService.setHopRecordDao(hopRecordDao);
+        hopRecordService.setHopRecordRepository(hopRecordRepository);
         boolean result = hopRecordService.deleteHopRecord(hopRecordEntity.getId());
 
         assertThat(result,equalTo(false));

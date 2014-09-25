@@ -1,6 +1,6 @@
 package com.homebrewrecordkeeper.service.unit;
 
-import com.homebrewrecordkeeper.dao.MaltRecordDao;
+import com.homebrewrecordkeeper.repository.MaltRecordRepository;
 import com.homebrewrecordkeeper.entity.MaltRecordEntity;
 import com.homebrewrecordkeeper.service.MaltRecordService;
 import com.homebrewrecordkeeper.service.MaltRecordServiceImpl;
@@ -23,12 +23,12 @@ public class MaltRecordServiceTest {
         MaltRecordEntity createdMaltRecordEntity = new MaltRecordEntity("test1",2,"test2","test3");
         createdMaltRecordEntity.setId(1);
 
-        MaltRecordDao maltRecordDao = createNiceMock(MaltRecordDao.class);
-        expect(maltRecordDao.addMaltRecord(maltRecordEntity)).andReturn(createdMaltRecordEntity);
-        replay(maltRecordDao);
+        MaltRecordRepository maltRecordRepository = createNiceMock(MaltRecordRepository.class);
+        expect(maltRecordRepository.addMaltRecord(maltRecordEntity)).andReturn(createdMaltRecordEntity);
+        replay(maltRecordRepository);
 
         MaltRecordService maltRecordService = new MaltRecordServiceImpl();
-        maltRecordService.setMaltRecordDao(maltRecordDao);
+        maltRecordService.setMaltRecordRepository(maltRecordRepository);
         MaltRecordEntity testedMaltRecordEntity = maltRecordService.addMaltRecord(maltRecordEntity);
 
         assertThat(testedMaltRecordEntity.getId(),not(equalTo(0)));
@@ -44,13 +44,13 @@ public class MaltRecordServiceTest {
         MaltRecordEntity maltRecordEntityChanged = new MaltRecordEntity("test1",2,"test4","test5");
         maltRecordEntity.setId(1);
 
-        MaltRecordDao maltRecordDao = createNiceMock(MaltRecordDao.class);
-        expect(maltRecordDao.getMaltRecordById(maltRecordEntity.getId())).andReturn(maltRecordEntity);
-        expect(maltRecordDao.updateMaltRecord(maltRecordEntity)).andReturn(maltRecordEntityChanged);
-        replay(maltRecordDao);
+        MaltRecordRepository maltRecordRepository = createNiceMock(MaltRecordRepository.class);
+        expect(maltRecordRepository.getMaltRecordById(maltRecordEntity.getId())).andReturn(maltRecordEntity);
+        expect(maltRecordRepository.updateMaltRecord(maltRecordEntity)).andReturn(maltRecordEntityChanged);
+        replay(maltRecordRepository);
 
         MaltRecordService maltRecordService = new MaltRecordServiceImpl();
-        maltRecordService.setMaltRecordDao(maltRecordDao);
+        maltRecordService.setMaltRecordRepository(maltRecordRepository);
         MaltRecordEntity testedMaltRecordEntity = maltRecordService.updateMaltRecord(maltRecordEntityChanged, maltRecordEntity.getId());
 
         assertThat(testedMaltRecordEntity.getUnit(), equalTo("test4"));
@@ -62,13 +62,13 @@ public class MaltRecordServiceTest {
         MaltRecordEntity maltRecordEntity = new MaltRecordEntity("test1",2,"test2","test3");
         maltRecordEntity.setId(1);
 
-        MaltRecordDao maltRecordDao = createNiceMock(MaltRecordDao.class);
-        expect(maltRecordDao.getMaltRecordById(maltRecordEntity.getId())).andReturn(maltRecordEntity);
-        expect(maltRecordDao.deleteMaltRecord(maltRecordEntity)).andReturn(true);
-        replay(maltRecordDao);
+        MaltRecordRepository maltRecordRepository = createNiceMock(MaltRecordRepository.class);
+        expect(maltRecordRepository.getMaltRecordById(maltRecordEntity.getId())).andReturn(maltRecordEntity);
+        expect(maltRecordRepository.deleteMaltRecord(maltRecordEntity)).andReturn(true);
+        replay(maltRecordRepository);
 
         MaltRecordService maltRecordService = new MaltRecordServiceImpl();
-        maltRecordService.setMaltRecordDao(maltRecordDao);
+        maltRecordService.setMaltRecordRepository(maltRecordRepository);
         boolean result = maltRecordService.deleteMaltRecord(maltRecordEntity.getId());
 
         assertThat(result,equalTo(true));
@@ -78,12 +78,12 @@ public class MaltRecordServiceTest {
     {
         final MaltRecordEntity test1 = new MaltRecordEntity("test1",1,"test1","test1");
         final MaltRecordEntity test2 = new MaltRecordEntity("test2",1,"test2","test2");
-        MaltRecordDao maltRecordDao = createNiceMock(MaltRecordDao.class);
-        expect(maltRecordDao.getAll()).andReturn(new ArrayList<>(Arrays.asList(test1,test2)));
-        replay(maltRecordDao);
+        MaltRecordRepository maltRecordRepository = createNiceMock(MaltRecordRepository.class);
+        expect(maltRecordRepository.getAll()).andReturn(new ArrayList<>(Arrays.asList(test1,test2)));
+        replay(maltRecordRepository);
 
         MaltRecordService maltRecordService = new MaltRecordServiceImpl();
-        maltRecordService.setMaltRecordDao(maltRecordDao);
+        maltRecordService.setMaltRecordRepository(maltRecordRepository);
         List<MaltRecordEntity> maltRecordEntityList = maltRecordService.getAll();
 
         assertThat(maltRecordEntityList.get(0),equalTo(test1));
@@ -94,12 +94,12 @@ public class MaltRecordServiceTest {
     {
         final MaltRecordEntity test1 = new MaltRecordEntity("test1",1,"test1","test1");
         test1.setId(1);
-        MaltRecordDao maltRecordDao = createNiceMock(MaltRecordDao.class);
-        expect(maltRecordDao.getMaltRecordById(1)).andReturn(test1);
-        replay(maltRecordDao);
+        MaltRecordRepository maltRecordRepository = createNiceMock(MaltRecordRepository.class);
+        expect(maltRecordRepository.getMaltRecordById(1)).andReturn(test1);
+        replay(maltRecordRepository);
 
         MaltRecordService maltRecordService = new MaltRecordServiceImpl();
-        maltRecordService.setMaltRecordDao(maltRecordDao);
+        maltRecordService.setMaltRecordRepository(maltRecordRepository);
         MaltRecordEntity maltRecordEntity = maltRecordService.getMaltRecordById(1);
 
         assertThat(maltRecordEntity.getId(),equalTo(1));
@@ -110,12 +110,12 @@ public class MaltRecordServiceTest {
     @Test
     public void getNotExistingMaltRecordByIdTest()
     {
-        MaltRecordDao maltRecordDao = createNiceMock(MaltRecordDao.class);
-        expect(maltRecordDao.getMaltRecordById(1)).andReturn(null);
-        replay(maltRecordDao);
+        MaltRecordRepository maltRecordRepository = createNiceMock(MaltRecordRepository.class);
+        expect(maltRecordRepository.getMaltRecordById(1)).andReturn(null);
+        replay(maltRecordRepository);
 
         MaltRecordService maltRecordService = new MaltRecordServiceImpl();
-        maltRecordService.setMaltRecordDao(maltRecordDao);
+        maltRecordService.setMaltRecordRepository(maltRecordRepository);
         MaltRecordEntity maltRecordEntity = maltRecordService.getMaltRecordById(1);
 
         assertThat(maltRecordEntity,equalTo(null));
@@ -126,13 +126,13 @@ public class MaltRecordServiceTest {
         MaltRecordEntity maltRecordEntity = new MaltRecordEntity("test1",2,"test2","test3");
         maltRecordEntity.setId(1);
 
-        MaltRecordDao maltRecordDao = createNiceMock(MaltRecordDao.class);
-        expect(maltRecordDao.getMaltRecordById(1)).andReturn(null);
-        expect(maltRecordDao.updateMaltRecord(maltRecordEntity)).andReturn(maltRecordEntity);
-        replay(maltRecordDao);
+        MaltRecordRepository maltRecordRepository = createNiceMock(MaltRecordRepository.class);
+        expect(maltRecordRepository.getMaltRecordById(1)).andReturn(null);
+        expect(maltRecordRepository.updateMaltRecord(maltRecordEntity)).andReturn(maltRecordEntity);
+        replay(maltRecordRepository);
 
         MaltRecordService maltRecordService = new MaltRecordServiceImpl();
-        maltRecordService.setMaltRecordDao(maltRecordDao);
+        maltRecordService.setMaltRecordRepository(maltRecordRepository);
         MaltRecordEntity testedMaltRecordEntity = maltRecordService.updateMaltRecord(maltRecordEntity, maltRecordEntity.getId());
 
         assertThat(testedMaltRecordEntity,equalTo(null));
@@ -143,13 +143,13 @@ public class MaltRecordServiceTest {
         MaltRecordEntity maltRecordEntity = new MaltRecordEntity("test1",2,"test2","test3");
         maltRecordEntity.setId(1);
 
-        MaltRecordDao maltRecordDao = createNiceMock(MaltRecordDao.class);
-        expect(maltRecordDao.getMaltRecordById(maltRecordEntity.getId())).andReturn(null);
-        expect(maltRecordDao.deleteMaltRecord(maltRecordEntity)).andReturn(false);
-        replay(maltRecordDao);
+        MaltRecordRepository maltRecordRepository = createNiceMock(MaltRecordRepository.class);
+        expect(maltRecordRepository.getMaltRecordById(maltRecordEntity.getId())).andReturn(null);
+        expect(maltRecordRepository.deleteMaltRecord(maltRecordEntity)).andReturn(false);
+        replay(maltRecordRepository);
 
         MaltRecordService maltRecordService = new MaltRecordServiceImpl();
-        maltRecordService.setMaltRecordDao(maltRecordDao);
+        maltRecordService.setMaltRecordRepository(maltRecordRepository);
         boolean result = maltRecordService.deleteMaltRecord(maltRecordEntity.getId());
 
         assertThat(result,equalTo(false));

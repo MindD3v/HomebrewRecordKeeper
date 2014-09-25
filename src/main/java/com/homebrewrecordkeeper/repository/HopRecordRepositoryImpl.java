@@ -1,4 +1,4 @@
-package com.homebrewrecordkeeper.dao;
+package com.homebrewrecordkeeper.repository;
 
 import com.homebrewrecordkeeper.entity.HopRecordEntity;
 import org.hibernate.Criteria;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class HopRecordDaoImpl implements HopRecordDao {
+public class HopRecordRepositoryImpl implements HopRecordRepository {
     @Autowired
     private SessionFactory sessionFactory;
 
@@ -50,7 +50,7 @@ public class HopRecordDaoImpl implements HopRecordDao {
     @SuppressWarnings("unchecked")
     @Override
     public List<HopRecordEntity> getAll() {
-        return sessionFactory.getCurrentSession().createQuery("from HopRecordEntity").list();
+        return sessionFactory.getCurrentSession().createQuery("from HopRecordEntity ").list();
     }
 
     @Override

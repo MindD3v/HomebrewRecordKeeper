@@ -1,4 +1,4 @@
-package com.homebrewrecordkeeper.dao;
+package com.homebrewrecordkeeper.repository;
 
 import com.homebrewrecordkeeper.entity.MaltRecordEntity;
 import org.hibernate.Criteria;
@@ -6,12 +6,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
 
 @Repository
-public class MaltRecordDaoImpl implements MaltRecordDao {
+public class MaltRecordRepositoryImpl implements MaltRecordRepository {
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -48,7 +47,7 @@ public class MaltRecordDaoImpl implements MaltRecordDao {
 
     @Override
     public List<MaltRecordEntity> getAll() {
-        return sessionFactory.getCurrentSession().createQuery("from MaltRecordEntity ").list();
+        return sessionFactory.getCurrentSession().createQuery("FROM MaltRecordEntity").list();
     }
 
     public void setSessionFactory(SessionFactory sessionFactory) {

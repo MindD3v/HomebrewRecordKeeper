@@ -1,6 +1,6 @@
 package com.homebrewrecordkeeper.service;
 
-import com.homebrewrecordkeeper.dao.MaltRecordDao;
+import com.homebrewrecordkeeper.repository.MaltRecordRepository;
 import com.homebrewrecordkeeper.entity.MaltRecordEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,20 +11,20 @@ import java.util.List;
 @Service
 public class MaltRecordServiceImpl implements MaltRecordService {
     @Autowired
-    private MaltRecordDao maltRecordDao;
+    private MaltRecordRepository _maltRecordRepository;
 
     @Override
     @Transactional
     public MaltRecordEntity addMaltRecord(MaltRecordEntity maltRecordEntity) {
-        return maltRecordDao.addMaltRecord(maltRecordEntity);
+        return _maltRecordRepository.addMaltRecord(maltRecordEntity);
     }
 
     @Override
     @Transactional
     public boolean deleteMaltRecord(int id) {
-        MaltRecordEntity maltRecordEntity = maltRecordDao.getMaltRecordById(id);
+        MaltRecordEntity maltRecordEntity = _maltRecordRepository.getMaltRecordById(id);
         if(maltRecordEntity != null)
-            return maltRecordDao.deleteMaltRecord(maltRecordEntity);
+            return _maltRecordRepository.deleteMaltRecord(maltRecordEntity);
         else
             return false;
     }
@@ -33,7 +33,7 @@ public class MaltRecordServiceImpl implements MaltRecordService {
     @Transactional
     public MaltRecordEntity updateMaltRecord(MaltRecordEntity maltRecordEntity, int id){
 
-        MaltRecordEntity maltRecordEntityToModify = maltRecordDao.getMaltRecordById(id);
+        MaltRecordEntity maltRecordEntityToModify = _maltRecordRepository.getMaltRecordById(id);
         if(maltRecordEntityToModify != null)
         {
             maltRecordEntityToModify.setUnit(maltRecordEntity.getUnit());
@@ -41,7 +41,7 @@ public class MaltRecordServiceImpl implements MaltRecordService {
             maltRecordEntityToModify.setType(maltRecordEntity.getType());
             maltRecordEntityToModify.setAmount(maltRecordEntity.getAmount());
 
-            return maltRecordDao.updateMaltRecord(maltRecordEntityToModify);
+            return _maltRecordRepository.updateMaltRecord(maltRecordEntityToModify);
         }
 
         return null;
@@ -50,20 +50,20 @@ public class MaltRecordServiceImpl implements MaltRecordService {
     @Override
     @Transactional
     public MaltRecordEntity getMaltRecordById(int id) {
-        return maltRecordDao.getMaltRecordById(id);
+        return _maltRecordRepository.getMaltRecordById(id);
     }
 
     @Override
     @Transactional
     public List<MaltRecordEntity> getAll() {
-        return maltRecordDao.getAll();
+        return _maltRecordRepository.getAll();
     }
 
-    public void setMaltRecordDao(MaltRecordDao maltRecordDao) {
-        this.maltRecordDao = maltRecordDao;
+    public void setMaltRecordRepository(MaltRecordRepository maltRecordRepository) {
+        this._maltRecordRepository = maltRecordRepository;
     }
 
-    public MaltRecordDao getMaltRecordDao() {
-        return this.maltRecordDao;
+    public MaltRecordRepository getMaltRecordRepository() {
+        return this._maltRecordRepository;
     }
 }

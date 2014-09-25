@@ -1,11 +1,11 @@
-package com.homebrewrecordkeeper.dao;
+package com.homebrewrecordkeeper.repository;
 
 import com.homebrewrecordkeeper.entity.MaltRecordEntity;
 import org.hibernate.SessionFactory;
 
 import java.util.List;
 
-public interface MaltRecordDao {
+public interface MaltRecordRepository {
     MaltRecordEntity addMaltRecord(MaltRecordEntity maltRecordEntity);
     boolean deleteMaltRecord(MaltRecordEntity maltRecordEntity);
     MaltRecordEntity updateMaltRecord(MaltRecordEntity maltRecordEntity);
